@@ -1,0 +1,25 @@
+{
+  "name": "@hexlet/code",
+  "version": "1.0.0",
+  "description": "cli for diff between some formats",
+  "main": "index.js",
+  "bin": {
+    "gendiff": "bin/gendiff.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ruslanmsk/frontend-project-lvl2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ruslanmsk/frontend-project-lvl2/issues"
+  },
+  "homepage": "https://github.com/ruslanmsk/frontend-project-lvl2#readme",
+  "dependencies": {
+    "commander": "^6.2.0"
+  }
+}
