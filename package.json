@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "cli for diff between some formats",
   "main": "index.js",
+  "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
