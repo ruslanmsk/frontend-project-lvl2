@@ -1,14 +1,14 @@
-import fs from "fs";
-import path from "path";
+import fs from 'fs';
+import path from 'path';
 
-export default function (filepath1, filepath2) {
+export default function genDiff(filepath1, filepath2) {
   const fileContent1 = fs.readFileSync(path.resolve(filepath1));
   const fileContent2 = fs.readFileSync(path.resolve(filepath2));
 
   const file1 = JSON.parse(fileContent1);
   const file2 = JSON.parse(fileContent2);
 
-  const result = ["{"];
+  const result = ['{'];
 
   for (const [key, value] of Object.entries(file1)) {
     if (key in file2) {
@@ -29,7 +29,7 @@ export default function (filepath1, filepath2) {
     }
   }
 
-  result.push("}");
+  result.push('}');
 
-  return result.join("\n").trim();
+  return result.join('\n').trim();
 }
