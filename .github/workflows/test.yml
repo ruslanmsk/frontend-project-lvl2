@@ -1,0 +1,48 @@
+name: TEST
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: make install
+    - run: make test
+
+  coverage:
+      needs: [ test ]
+      name: coverage
+
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [14.x]
+
+      steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: make install
+      - uses: paambaati/codeclimate-action@v2.5.7
+        env:
+          CC_TEST_REPORTER_ID: 155d5af9ef9bb65048a0fd8e2f0ab20cf983a32dfa924b57804dcc1181d341fe
+        with:
+          coverageCommand: make test-coverage
