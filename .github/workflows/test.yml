@@ -41,7 +41,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: make install
-      - uses: paambaati/codeclimate-action@v2.5.7
+      - uses: paambaati/codeclimate-action@v2.7.4
         env:
           CC_TEST_REPORTER_ID: 155d5af9ef9bb65048a0fd8e2f0ab20cf983a32dfa924b57804dcc1181d341fe
         with:
