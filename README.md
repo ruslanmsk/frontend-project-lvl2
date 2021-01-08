@@ -8,3 +8,6 @@
 
 ## Get diff from two json
 [![asciicast](https://asciinema.org/a/BLvTVECbPvSIp8Z3W8joGENGi.svg)](https://asciinema.org/a/BLvTVECbPvSIp8Z3W8joGENGi)
+
+## Get diff from two yaml
+[![asciicast](https://asciinema.org/a/fuCwV2LuGQPGYrLwWAcLs7v4x.svg)](https://asciinema.org/a/fuCwV2LuGQPGYrLwWAcLs7v4x)
