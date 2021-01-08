@@ -21,7 +21,8 @@
   },
   "homepage": "https://github.com/ruslanmsk/frontend-project-lvl2#readme",
   "dependencies": {
-    "commander": "^6.2.0"
+    "commander": "^6.2.0",
+    "js-yaml": "^4.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.10",

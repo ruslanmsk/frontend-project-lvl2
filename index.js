@@ -1,12 +1,8 @@
-import fs from 'fs';
-import path from 'path';
+import parseFile from './src/parsers.js';
 
 export default function genDiff(filepath1, filepath2) {
-  const fileContent1 = fs.readFileSync(path.resolve(filepath1));
-  const fileContent2 = fs.readFileSync(path.resolve(filepath2));
-
-  const file1 = JSON.parse(fileContent1);
-  const file2 = JSON.parse(fileContent2);
+  const file1 = parseFile(filepath1);
+  const file2 = parseFile(filepath2);
 
   const result = ['{'];
 
