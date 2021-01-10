@@ -1,58 +1,67 @@
+import path from 'path';
 import genDiff from '../index.js';
 
-describe('сравниваем два json', () => {
-  it('подробный случай', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/file1.json`,
-      `${__dirname}/../__fixtures__/file2.json`,
-    );
-    expect(result).toStrictEqual(`{
+let fileFormat = 'json';
+
+function getFixturePath(filename) {
+  return path.join(__dirname, '..', '__fixtures__', fileFormat, `${filename}.${fileFormat}`);
+}
+
+describe('сравниваем два файла', () => {
+  function run(format) {
+    fileFormat = format;
+
+    it('подробный случай', () => {
+      expect.hasAssertions();
+      const result = genDiff(
+        getFixturePath('file1', fileFormat),
+        getFixturePath('file2', fileFormat),
+      );
+      expect(result).toStrictEqual(`{
   - timeout: 50
   + timeout: 20
 }`);
-  });
+    });
 
-  it('пустые файлы', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/empty.json`,
-      `${__dirname}/../__fixtures__/empty.json`,
-    );
-    expect(result).toStrictEqual(`{
+    it('пустые файлы', () => {
+      expect.hasAssertions();
+      const result = genDiff(
+        getFixturePath('empty', fileFormat),
+        getFixturePath('empty', fileFormat),
+      );
+      expect(result).toStrictEqual(`{
 }`);
-  });
+    });
 
-  it('только добавляем значения', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/empty.json`,
-      `${__dirname}/../__fixtures__/file1.json`,
-    );
-    expect(result).toStrictEqual(`{
+    it('только добавляем значения', () => {
+      expect.hasAssertions();
+      const result = genDiff(
+        getFixturePath('empty'),
+        getFixturePath('file1'),
+      );
+      expect(result).toStrictEqual(`{
   + timeout: 50
 }`);
-  });
+    });
 
-  it('только удаляем значения', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/file1.json`,
-      `${__dirname}/../__fixtures__/empty.json`,
-    );
-    expect(result).toStrictEqual(`{
+    it('только удаляем значения', () => {
+      expect.hasAssertions();
+      const result = genDiff(
+        getFixturePath('file1'),
+        getFixturePath('empty'),
+      );
+      expect(result).toStrictEqual(`{
   - timeout: 50
 }`);
-  });
+    });
 
-  // Ключи должны быть в алфавитном порядке
-  it('сложный кейс, где все', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/file3.json`,
-      `${__dirname}/../__fixtures__/file4.json`,
-    );
-    expect(result).toStrictEqual(`{
+    it('сложный кейс, где все', () => {
+      expect.hasAssertions();
+      const result = genDiff(
+        getFixturePath('file3'),
+        getFixturePath('file4'),
+      );
+      expect(result).toStrictEqual(`{
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
@@ -60,68 +69,9 @@ describe('сравниваем два json', () => {
   + timeout: 20
   + verbose: true
 }`);
-  });
-});
+    });
+  }
 
-describe('сравниваем два yaml', () => {
-  it('подробный случай', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/file1.yml`,
-      `${__dirname}/../__fixtures__/file2.yml`,
-    );
-    expect(result).toStrictEqual(`{
-  - timeout: 50
-  + timeout: 20
-}`);
-  });
-
-  it('пустые файлы', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/empty.yml`,
-      `${__dirname}/../__fixtures__/empty.yml`,
-    );
-    expect(result).toStrictEqual(`{
-}`);
-  });
-
-  it('только добавляем значения', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/empty.yml`,
-      `${__dirname}/../__fixtures__/file1.yml`,
-    );
-    expect(result).toStrictEqual(`{
-  + timeout: 50
-}`);
-  });
-
-  it('только удаляем значения', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/file1.yml`,
-      `${__dirname}/../__fixtures__/empty.yml`,
-    );
-    expect(result).toStrictEqual(`{
-  - timeout: 50
-}`);
-  });
-
-  // Ключи должны быть в алфавитном порядке
-  it('сложный кейс, где все', () => {
-    expect.hasAssertions();
-    const result = genDiff(
-      `${__dirname}/../__fixtures__/file3.yml`,
-      `${__dirname}/../__fixtures__/file4.yml`,
-    );
-    expect(result).toStrictEqual(`{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`);
-  });
+  run('json');
+  run('yml');
 });
