@@ -15,6 +15,6 @@ program
     const result = getDiff(filepath1, filepath2);
     console.log(result);
   })
-  .option('-f, --format [type]', 'output format');
+  .option('-f, --format [type]', 'output format', 'stylish');
 
 program.parse(process.argv);

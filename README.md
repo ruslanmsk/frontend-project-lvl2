@@ -11,3 +11,6 @@
 
 ## Get diff from two yaml
 [![asciicast](https://asciinema.org/a/fuCwV2LuGQPGYrLwWAcLs7v4x.svg)](https://asciinema.org/a/fuCwV2LuGQPGYrLwWAcLs7v4x)
+
+## Get diff from two complex files
+[![asciicast](https://asciinema.org/a/lxcOIdpcHjN9pIFWcbiDTXrOa.svg)](https://asciinema.org/a/lxcOIdpcHjN9pIFWcbiDTXrOa)
