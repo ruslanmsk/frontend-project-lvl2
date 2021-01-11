@@ -11,8 +11,8 @@ program
   .description('Compares two configuration files and shows a difference.')
   .helpOption('-h, --help', 'output usage information')
   .arguments('<filepath1> <filepath2>')
-  .action((filepath1, filepath2) => {
-    const result = getDiff(filepath1, filepath2);
+  .action((filepath1, filepath2, options) => {
+    const result = getDiff(filepath1, filepath2, options.format);
     console.log(result);
   })
   .option('-f, --format [type]', 'output format', 'stylish');

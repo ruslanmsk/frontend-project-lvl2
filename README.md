@@ -14,3 +14,6 @@
 
 ## Get diff from two complex files
 [![asciicast](https://asciinema.org/a/lxcOIdpcHjN9pIFWcbiDTXrOa.svg)](https://asciinema.org/a/lxcOIdpcHjN9pIFWcbiDTXrOa)
+
+## Get diff from two complex files with format in plain
+[![asciicast](https://asciinema.org/a/hSrPUUVXluP8aLqd98MT3cK7P.svg)](https://asciinema.org/a/hSrPUUVXluP8aLqd98MT3cK7P)
