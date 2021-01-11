@@ -1,4 +1,4 @@
-import parseFile from './src/parsers.js';
+import parseFile from './src/parsers/index.js';
 import getFormatter from './src/formatters/index.js';
 
 // TODO: в утилиты перенести
