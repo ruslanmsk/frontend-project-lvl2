@@ -142,6 +142,83 @@ Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`);
     });
+
+    it('сложный кейс, где все в формате json', () => {
+      expect.hasAssertions();
+      const result = genDiff(
+        getFixturePath('file5'),
+        getFixturePath('file6'),
+        'json',
+      );
+      expect(result).toStrictEqual(JSON.stringify([
+        {
+          property: 'common',
+          status: 'updated',
+          children: [
+            { property: 'follow', status: 'added', newValue: false },
+            { property: 'setting2', status: 'removed' },
+            {
+              property: 'setting3', status: 'updated', oldValue: true, newValue: null,
+            },
+            { property: 'setting4', status: 'added', newValue: 'blah blah' },
+            {
+              property: 'setting5',
+              status: 'added',
+              newValue: {
+                key5: 'value5',
+              },
+            },
+            {
+              property: 'setting6',
+              status: 'updated',
+              children: [
+                {
+                  property: 'doge',
+                  status: 'updated',
+                  children: [
+                    {
+                      property: 'wow', status: 'updated', oldValue: '', newValue: 'so much',
+                    },
+                  ],
+                },
+                { property: 'ops', status: 'added', newValue: 'vops' },
+              ],
+            },
+          ],
+        },
+
+        {
+          property: 'group1',
+          status: 'updated',
+          children: [
+            {
+              property: 'baz', status: 'updated', oldValue: 'bas', newValue: 'bars',
+            },
+            {
+              property: 'nest',
+              status: 'updated',
+              oldValue: {
+                key: 'value',
+              },
+              newValue: 'str',
+            },
+          ],
+        },
+        { property: 'group2', status: 'removed' },
+        {
+          property: 'group3',
+          status: 'added',
+          newValue: {
+            fee: 100500,
+            deep: {
+              id: {
+                number: 45,
+              },
+            },
+          },
+        },
+      ]));
+    });
   }
 
   run('json');

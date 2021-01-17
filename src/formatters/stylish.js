@@ -68,4 +68,4 @@ export default function stylishFormatter(diff, space = 0, sort = true) {
   result.push(`${' '.repeat(4 * space)}}`);
 
   return result.join('\n').trim();
-};
+}

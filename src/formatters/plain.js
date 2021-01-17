@@ -2,15 +2,15 @@
 const isObject = (obj) => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
 
 function styleValue(value) {
-    if (isObject(value)) {
-        return '[complex value]';
-    }
+  if (isObject(value)) {
+    return '[complex value]';
+  }
 
-    if (typeof value === 'string') {
-        return `'${value}'`;
-    }
+  if (typeof value === 'string') {
+    return `'${value}'`;
+  }
 
-    return value;
+  return value;
 }
 
 function generate(diff, prefix = '') {
