@@ -23,9 +23,8 @@ function generate(diff) {
         result.push({ property: key, status: 'added', newValue: value });
         break;
       case 'complex':
-        const innerResult = generate(children);
         result.push({
-          property: key, status: 'updated', children: [...innerResult],
+          property: key, status: 'updated', children: [...generate(children)],
         });
         break;
       default:

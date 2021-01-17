@@ -1,22 +1,22 @@
 const isObject = (obj) => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
 
 export default function stylishFormatter(diff, space = 0, sort = true) {
-  const printComplexObj = (value, space) => {
+  const printComplexObj = (value, currentSpace) => {
     const keys = Object.keys(value);
     // TODO: заменить на конст
     let result = [];
 
     for (const key of keys) {
       if (isObject(value[key])) {
-        result.push(`    ${key}: ${printComplexObj(value[key], space + 1)}`);
+        result.push(`    ${key}: ${printComplexObj(value[key], currentSpace + 1)}`);
       } else {
         result.push(`    ${key}: ${value[key]}`);
       }
     }
 
-    result = result.map((str) => `${' '.repeat(4 * (space + 1))}${str}`);
+    result = result.map((str) => `${' '.repeat(4 * (currentSpace + 1))}${str}`);
     result.unshift('{');
-    result.push(`${' '.repeat(4 * (space + 1))}}`);
+    result.push(`${' '.repeat(4 * (currentSpace + 1))}}`);
 
     return result.join('\n').trim();
   };

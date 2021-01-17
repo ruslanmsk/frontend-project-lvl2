@@ -37,8 +37,7 @@ function generate(diff, prefix = '') {
         result.push(`Property '${prefix}${key}' was added with value: ${styleValue(value)}`);
         break;
       case 'complex':
-        const innerResult = generate(children, `${prefix}${key}.`);
-        innerResult.forEach((r) => result.push(r));
+        generate(children, `${prefix}${key}.`).forEach((r) => result.push(r));
         break;
       default:
         throw new Error('not right status diff');
