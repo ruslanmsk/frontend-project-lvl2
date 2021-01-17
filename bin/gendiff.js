@@ -1,4 +1,4 @@
-#!/usr/bin/env node --harmony --experimental-json-modules --no-warnings
+#!/usr/bin/env -S node --harmony --experimental-json-modules --no-warnings
 
 import commander from 'commander';
 import packageJson from '../package.json';
