@@ -1,67 +1,59 @@
 import path from 'path';
 import genDiff from '../index.js';
 
-let fileFormat = 'json';
+const formats = ['json', 'yml'];
 
-function getFixturePath(filename) {
-  return path.join(__dirname, '..', '__fixtures__', fileFormat, `${filename}.${fileFormat}`);
+function getFixturePath(filename, format) {
+  return path.join(__dirname, '..', '__fixtures__', format, `${filename}.${format}`);
 }
 
-describe('сравниваем два файла', () => {
-  function run(format) {
-    fileFormat = format;
-
-    it('подробный случай', () => {
-      expect.hasAssertions();
-      const result = genDiff(
-        getFixturePath('file1', fileFormat),
-        getFixturePath('file2', fileFormat),
-      );
-      expect(result).toStrictEqual(`{
+describe('сравниваем разницу двух файлов', () => {
+  it.each(formats)('изменение одного свойства', (format) => {
+    const result = genDiff(
+      getFixturePath('file1', format),
+      getFixturePath('file2', format),
+    );
+    expect(result).toStrictEqual(`{
   - timeout: 50
   + timeout: 20
 }`);
-    });
+  });
 
-    it('пустые файлы', () => {
-      expect.hasAssertions();
-      const result = genDiff(
-        getFixturePath('empty', fileFormat),
-        getFixturePath('empty', fileFormat),
-      );
-      expect(result).toStrictEqual(`{
+  it.each(formats)('оба файла пустые', (format) => {
+    const result = genDiff(
+      getFixturePath('empty', format),
+      getFixturePath('empty', format),
+    );
+    expect(result).toStrictEqual(`{
 }`);
-    });
+  });
 
-    it('только добавляем значения', () => {
-      expect.hasAssertions();
-      const result = genDiff(
-        getFixturePath('empty'),
-        getFixturePath('file1'),
-      );
-      expect(result).toStrictEqual(`{
+  it.each(formats)('добавляем простое значение', (format) => {
+    const result = genDiff(
+      getFixturePath('empty', format),
+      getFixturePath('file1', format),
+    );
+    expect(result).toStrictEqual(`{
   + timeout: 50
 }`);
-    });
+  });
 
-    it('только удаляем значения', () => {
-      expect.hasAssertions();
-      const result = genDiff(
-        getFixturePath('file1'),
-        getFixturePath('empty'),
-      );
-      expect(result).toStrictEqual(`{
+  it.each(formats)('удаляем простое значение', (format) => {
+    const result = genDiff(
+      getFixturePath('file1', format),
+      getFixturePath('empty', format),
+    );
+    expect(result).toStrictEqual(`{
   - timeout: 50
 }`);
-    });
+  });
 
-    it('сложный кейс, где все', () => {
-      expect.hasAssertions();
-      const result = genDiff(
-        getFixturePath('file3'),
-        getFixturePath('file4'),
-      );
-      expect(result).toStrictEqual(`{
+  it.each(formats)('плоский файл с удалением, добавлением, изменением', (format) => {
+    const result = genDiff(
+      getFixturePath('file3', format),
+      getFixturePath('file4', format),
+    );
+    expect(result).toStrictEqual(`{
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
@@ -69,15 +61,14 @@ describe('сравниваем два файла', () => {
   + timeout: 20
   + verbose: true
 }`);
-    });
+  });
 
-    it('сложный кейс, со вложенной структурой', () => {
-      expect.hasAssertions();
-      const result = genDiff(
-        getFixturePath('file5'),
-        getFixturePath('file6'),
-      );
-      expect(result).toStrictEqual(`{
+  it.each(formats)('многоуровневый файл', (format) => {
+    const result = genDiff(
+      getFixturePath('file5', format),
+      getFixturePath('file6', format),
+    );
+    expect(result).toStrictEqual(`{
     common: {
       + follow: false
         setting1: Value 1
@@ -121,16 +112,15 @@ describe('сравниваем два файла', () => {
         }
     }
 }`);
-    });
+  });
 
-    it('сложный кейс, где все в формате plain', () => {
-      expect.hasAssertions();
-      const result = genDiff(
-        getFixturePath('file5'),
-        getFixturePath('file6'),
-        'plain',
-      );
-      expect(result).toStrictEqual(`Property 'common.follow' was added with value: false
+  it.each(formats)('многоуровневый файл, разница в формате plain', (format) => {
+    const result = genDiff(
+      getFixturePath('file5', format),
+      getFixturePath('file6', format),
+      'plain',
+    );
+    expect(result).toStrictEqual(`Property 'common.follow' was added with value: false
 Property 'common.setting2' was removed
 Property 'common.setting3' was updated. From true to null
 Property 'common.setting4' was added with value: 'blah blah'
@@ -141,86 +131,81 @@ Property 'group1.baz' was updated. From 'bas' to 'bars'
 Property 'group1.nest' was updated. From [complex value] to 'str'
 Property 'group2' was removed
 Property 'group3' was added with value: [complex value]`);
-    });
+  });
 
-    it('сложный кейс, где все в формате json', () => {
-      expect.hasAssertions();
-      const result = genDiff(
-        getFixturePath('file5'),
-        getFixturePath('file6'),
-        'json',
-      );
-      expect(result).toStrictEqual(JSON.stringify([
-        {
-          property: 'common',
-          status: 'updated',
-          children: [
-            { property: 'follow', status: 'added', newValue: false },
-            { property: 'setting2', status: 'removed' },
-            {
-              property: 'setting3', status: 'updated', oldValue: true, newValue: null,
+  it.each(formats)('многоуровневый файл, разница в формате json', (format) => {
+    const result = genDiff(
+      getFixturePath('file5', format),
+      getFixturePath('file6', format),
+      'json',
+    );
+    expect(result).toStrictEqual(JSON.stringify([
+      {
+        property: 'common',
+        status: 'updated',
+        children: [
+          { property: 'follow', status: 'added', newValue: false },
+          { property: 'setting2', status: 'removed' },
+          {
+            property: 'setting3', status: 'updated', oldValue: true, newValue: null,
+          },
+          { property: 'setting4', status: 'added', newValue: 'blah blah' },
+          {
+            property: 'setting5',
+            status: 'added',
+            newValue: {
+              key5: 'value5',
             },
-            { property: 'setting4', status: 'added', newValue: 'blah blah' },
-            {
-              property: 'setting5',
-              status: 'added',
-              newValue: {
-                key5: 'value5',
+          },
+          {
+            property: 'setting6',
+            status: 'updated',
+            children: [
+              {
+                property: 'doge',
+                status: 'updated',
+                children: [
+                  {
+                    property: 'wow', status: 'updated', oldValue: '', newValue: 'so much',
+                  },
+                ],
               },
-            },
-            {
-              property: 'setting6',
-              status: 'updated',
-              children: [
-                {
-                  property: 'doge',
-                  status: 'updated',
-                  children: [
-                    {
-                      property: 'wow', status: 'updated', oldValue: '', newValue: 'so much',
-                    },
-                  ],
-                },
-                { property: 'ops', status: 'added', newValue: 'vops' },
-              ],
-            },
-          ],
-        },
+              { property: 'ops', status: 'added', newValue: 'vops' },
+            ],
+          },
+        ],
+      },
 
-        {
-          property: 'group1',
-          status: 'updated',
-          children: [
-            {
-              property: 'baz', status: 'updated', oldValue: 'bas', newValue: 'bars',
+      {
+        property: 'group1',
+        status: 'updated',
+        children: [
+          {
+            property: 'baz', status: 'updated', oldValue: 'bas', newValue: 'bars',
+          },
+          {
+            property: 'nest',
+            status: 'updated',
+            oldValue: {
+              key: 'value',
             },
-            {
-              property: 'nest',
-              status: 'updated',
-              oldValue: {
-                key: 'value',
-              },
-              newValue: 'str',
-            },
-          ],
-        },
-        { property: 'group2', status: 'removed' },
-        {
-          property: 'group3',
-          status: 'added',
-          newValue: {
-            fee: 100500,
-            deep: {
-              id: {
-                number: 45,
-              },
+            newValue: 'str',
+          },
+        ],
+      },
+      { property: 'group2', status: 'removed' },
+      {
+        property: 'group3',
+        status: 'added',
+        newValue: {
+          fee: 100500,
+          deep: {
+            id: {
+              number: 45,
             },
           },
         },
-      ]));
-    });
-  }
-
-  run('json');
-  run('yml');
+      },
+    ]));
+  });
 });
