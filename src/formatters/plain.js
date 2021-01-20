@@ -1,5 +1,4 @@
-// TODO: to utils
-const isObject = (obj) => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
+import isObject from '../utils.js';
 
 function styleValue(value) {
   if (isObject(value)) {

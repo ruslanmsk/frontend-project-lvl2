@@ -1,4 +1,4 @@
-const isObject = (obj) => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
+import isObject from '../utils.js';
 
 export default function stylishFormatter(diff, space = 0, sort = true) {
   const printComplexObj = (value, currentSpace) => {

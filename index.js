@@ -1,8 +1,6 @@
 import parseFile from './src/parsers/index.js';
 import getFormatter from './src/formatters/index.js';
-
-// TODO: в утилиты перенести
-const isObject = (obj) => typeof obj === 'object' && !Array.isArray(obj) && !!obj;
+import isObject from './src/utils.js';
 
 const getDiff = (json1, json2) => {
   const keys1 = Object.keys(json1);
