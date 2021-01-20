@@ -19,35 +19,6 @@ describe('сравниваем разницу двух файлов', () => {
 }`);
   });
 
-  it.each(formats)('оба файла пустые', (format) => {
-    const result = genDiff(
-      getFixturePath('empty', format),
-      getFixturePath('empty', format),
-    );
-    expect(result).toStrictEqual(`{
-}`);
-  });
-
-  it.each(formats)('добавляем простое значение', (format) => {
-    const result = genDiff(
-      getFixturePath('empty', format),
-      getFixturePath('file1', format),
-    );
-    expect(result).toStrictEqual(`{
-  + timeout: 50
-}`);
-  });
-
-  it.each(formats)('удаляем простое значение', (format) => {
-    const result = genDiff(
-      getFixturePath('file1', format),
-      getFixturePath('empty', format),
-    );
-    expect(result).toStrictEqual(`{
-  - timeout: 50
-}`);
-  });
-
   it.each(formats)('плоский файл с удалением, добавлением, изменением', (format) => {
     const result = genDiff(
       getFixturePath('file3', format),
