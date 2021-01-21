@@ -2,23 +2,14 @@ import isObject from '../utils.js';
 
 export default function stylishFormatter(diff, space = 0, sort = true) {
   const printComplexObj = (value, currentSpace) => {
-    const keys = Object.keys(value);
-    // TODO: заменить на конст
-    let result = [];
-
-    for (const key of keys) {
+    const result = Object.keys(value).map((key) => {
       if (isObject(value[key])) {
-        result.push(`    ${key}: ${printComplexObj(value[key], currentSpace + 1)}`);
-      } else {
-        result.push(`    ${key}: ${value[key]}`);
+        return `    ${key}: ${printComplexObj(value[key], currentSpace + 1)}`;
       }
-    }
+      return `    ${key}: ${value[key]}`;
+    }).map((str) => `${' '.repeat(4 * (currentSpace + 1))}${str}`);
 
-    result = result.map((str) => `${' '.repeat(4 * (currentSpace + 1))}${str}`);
-    result.unshift('{');
-    result.push(`${' '.repeat(4 * (currentSpace + 1))}}`);
-
-    return result.join('\n').trim();
+    return `{\n${result.join('\n')}\n${' '.repeat(4 * (currentSpace + 1))}}`.trim();
   };
 
   const generateLine = (key, value, sign = ' ') => {
@@ -33,39 +24,26 @@ export default function stylishFormatter(diff, space = 0, sort = true) {
     keys.sort();
   }
 
-  // TODO: заменить на конст
-  let result = [];
-
-  for (const key of keys) {
+  const result = keys.map((key) => {
     const {
       status, value, oldValue, newValue, children,
     } = diff[key];
+
     switch (status) {
       case 'unchanged':
-        result.push(generateLine(key, value, ' '));
-        break;
+        return generateLine(key, value, ' ');
       case 'modified':
-        result.push(generateLine(key, oldValue, '-'));
-        result.push(generateLine(key, newValue, '+'));
-        break;
+        return `${generateLine(key, oldValue, '-')}\n${' '.repeat(4 * space)}${generateLine(key, newValue, '+')}`;
       case 'deleted':
-        result.push(generateLine(key, value, '-'));
-        break;
+        return generateLine(key, value, '-');
       case 'added':
-        result.push(generateLine(key, value, '+'));
-        break;
+        return generateLine(key, value, '+');
       case 'complex':
-        result.push(`    ${key}: ${stylishFormatter(children, space + 1)}`);
-        break;
+        return `    ${key}: ${stylishFormatter(children, space + 1)}`;
       default:
         throw new Error('not right status diff');
     }
-  }
+  }).map((str) => `${' '.repeat(4 * space)}${str}`);
 
-  result = result.map((str) => `${' '.repeat(4 * space)}${str}`);
-
-  result.unshift('{');
-  result.push(`${' '.repeat(4 * space)}}`);
-
-  return result.join('\n').trim();
+  return `{\n${result.join('\n')}\n${' '.repeat(4 * space)}}`.trim();
 }
