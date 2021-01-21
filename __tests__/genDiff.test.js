@@ -8,17 +8,6 @@ function getFixturePath(filename, format) {
 }
 
 describe('сравниваем разницу двух файлов', () => {
-  it.each(formats)('изменение одного свойства', (format) => {
-    const result = genDiff(
-      getFixturePath('file1', format),
-      getFixturePath('file2', format),
-    );
-    expect(result).toStrictEqual(`{
-  - timeout: 50
-  + timeout: 20
-}`);
-  });
-
   it.each(formats)('плоский файл с удалением, добавлением, изменением', (format) => {
     const result = genDiff(
       getFixturePath('file3', format),
@@ -34,7 +23,7 @@ describe('сравниваем разницу двух файлов', () => {
 }`);
   });
 
-  it.each(formats)('многоуровневый файл', (format) => {
+  it.each(formats)('многоуровневый файл, разница в формате stylish', (format) => {
     const result = genDiff(
       getFixturePath('file5', format),
       getFixturePath('file6', format),
