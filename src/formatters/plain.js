@@ -13,36 +13,28 @@ function styleValue(value) {
 }
 
 function generate(diff, prefix = '') {
-  const result = [];
-  const keys = Object.keys(diff);
-  keys.sort();
-
-  for (const key of keys) {
+  const result = Object.keys(diff).sort().map((key) => {
     const {
       status, value, oldValue, newValue, children,
     } = diff[key];
 
     switch (status) {
       case 'unchanged':
-        break;
+        return null;
       case 'modified':
-        result.push(`Property '${prefix}${key}' was updated. From ${styleValue(oldValue)} to ${styleValue(newValue)}`);
-        break;
+        return `Property '${prefix}${key}' was updated. From ${styleValue(oldValue)} to ${styleValue(newValue)}`;
       case 'deleted':
-        result.push(`Property '${prefix}${key}' was removed`);
-        break;
+        return `Property '${prefix}${key}' was removed`;
       case 'added':
-        result.push(`Property '${prefix}${key}' was added with value: ${styleValue(value)}`);
-        break;
+        return `Property '${prefix}${key}' was added with value: ${styleValue(value)}`;
       case 'complex':
-        generate(children, `${prefix}${key}.`).forEach((r) => result.push(r));
-        break;
+        return generate(children, `${prefix}${key}.`).join('\n');
       default:
         throw new Error('not right status diff');
     }
-  }
+  });
 
-  return result;
+  return result.filter(Boolean);
 }
 
 export default function plainFormatter(diff) {
