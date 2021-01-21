@@ -42,5 +42,5 @@ export default function genDiff(filepath1, filepath2, formatName = 'stylish') {
   return result;
 }
 
-// let p = genDiff('./__fixtures__/json/file5.json', './__fixtures__/json/file6.json', 'plain');
+// const p = genDiff('./__fixtures__/json/file5.json', './__fixtures__/json/file6.json', 'plain');
 // console.log(p)

@@ -24,7 +24,6 @@ function generate(diff, prefix = '') {
 
     switch (status) {
       case 'unchanged':
-        // result.push(generateLine(key, value, ' '));
         break;
       case 'modified':
         result.push(`Property '${prefix}${key}' was updated. From ${styleValue(oldValue)} to ${styleValue(newValue)}`);

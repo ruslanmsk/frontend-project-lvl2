@@ -1,38 +1,31 @@
 function generate(diff) {
-  const result = [];
-  const keys = Object.keys(diff);
-  keys.sort();
-
-  for (const key of keys) {
+  const result = Object.keys(diff).sort().map((key) => {
     const {
       status, value, oldValue, newValue, children,
     } = diff[key];
 
     switch (status) {
       case 'unchanged':
-        break;
+        // TODO: убрать
+        return null;
       case 'modified':
-        result.push({
+        return {
           property: key, status: 'updated', oldValue, newValue,
-        });
-        break;
+        };
       case 'deleted':
-        result.push({ property: key, status: 'removed' });
-        break;
+        return { property: key, status: 'removed' };
       case 'added':
-        result.push({ property: key, status: 'added', newValue: value });
-        break;
+        return { property: key, status: 'added', newValue: value };
       case 'complex':
-        result.push({
+        return {
           property: key, status: 'updated', children: [...generate(children)],
-        });
-        break;
+        };
       default:
         throw new Error('not right status diff');
     }
-  }
+  });
 
-  return result;
+  return result.filter(Boolean);
 }
 
 export default function jsonFormatter(diff) {
