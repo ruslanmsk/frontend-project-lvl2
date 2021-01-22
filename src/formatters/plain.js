@@ -13,7 +13,7 @@ function styleValue(value) {
 }
 
 function generate(diff, prefix = '') {
-  const result = diff.sort().map((obj) => {
+  const result = diff.map((obj) => {
     const {
       status, value, oldValue, newValue, children, key,
     } = obj;

@@ -7,7 +7,7 @@ const getDiff = (json1, json2) => {
   const keys2 = Object.keys(json2);
   const allKeys = [...new Set([...keys1, ...keys2])];
 
-  const result = allKeys.sort().map((key) => {
+  const result = [...allKeys].sort().map((key) => {
     const isFile1Contain = key in json1;
     const isFile2Contain = key in json2;
 
