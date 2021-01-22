@@ -1,7 +1,7 @@
 {
   "name": "@hexlet/code",
   "version": "1.0.0",
-  "description": "cli for diff between some formats",
+  "description": "cli for diff between json and yml files",
   "main": "index.js",
   "type": "module",
   "bin": {
