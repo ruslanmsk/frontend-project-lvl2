@@ -8,21 +8,6 @@ function getFixturePath(filename, format) {
 }
 
 describe('сравниваем разницу двух файлов', () => {
-  it.each(formats)('плоский файл с удалением, добавлением, изменением', (format) => {
-    const result = genDiff(
-      getFixturePath('file3', format),
-      getFixturePath('file4', format),
-    );
-    expect(result).toStrictEqual(`{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`);
-  });
-
   it.each(formats)('многоуровневый файл, разница в формате stylish', (format) => {
     const result = genDiff(
       getFixturePath('file5', format),

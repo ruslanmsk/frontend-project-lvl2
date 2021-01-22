@@ -6,28 +6,27 @@ const getDiff = (json1, json2) => {
   const keys1 = Object.keys(json1);
   const keys2 = Object.keys(json2);
   const allKeys = [...new Set([...keys1, ...keys2])];
-  const result = {};
 
-  for (const key of allKeys) {
+  const result = allKeys.sort().map((key) => {
     const isFile1Contain = key in json1;
     const isFile2Contain = key in json2;
 
     if (isFile1Contain) {
       if (isFile2Contain) {
         if (isObject(json1[key]) && isObject(json2[key])) {
-          result[key] = { status: 'complex', children: getDiff(json1[key], json2[key]) };
-        } else if (json1[key] === json2[key]) {
-          result[key] = { status: 'unchanged', value: json1[key] };
-        } else {
-          result[key] = { status: 'modified', oldValue: json1[key], newValue: json2[key] };
+          return { status: 'complex', key, children: getDiff(json1[key], json2[key]) };
         }
-      } else {
-        result[key] = { status: 'deleted', value: json1[key] };
+        if (json1[key] === json2[key]) {
+          return { status: 'unchanged', key, value: json1[key] };
+        }
+        return {
+          status: 'modified', key, oldValue: json1[key], newValue: json2[key],
+        };
       }
-    } else {
-      result[key] = { status: 'added', value: json2[key] };
+      return { status: 'deleted', key, value: json1[key] };
     }
-  }
+    return { status: 'added', key, value: json2[key] };
+  });
 
   return result;
 };

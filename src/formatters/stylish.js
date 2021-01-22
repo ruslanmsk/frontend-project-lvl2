@@ -1,6 +1,6 @@
 import isObject from '../utils.js';
 
-export default function stylishFormatter(diff, space = 0, sort = true) {
+export default function stylishFormatter(diff, space = 0) {
   const printComplexObj = (value, currentSpace) => {
     const result = Object.keys(value).map((key) => {
       if (isObject(value[key])) {
@@ -19,15 +19,10 @@ export default function stylishFormatter(diff, space = 0, sort = true) {
     return `  ${sign} ${key}: ${value}`;
   };
 
-  const keys = Object.keys(diff);
-  if (sort) {
-    keys.sort();
-  }
-
-  const result = keys.map((key) => {
+  const result = diff.map((obj) => {
     const {
-      status, value, oldValue, newValue, children,
-    } = diff[key];
+      status, value, oldValue, newValue, children, key,
+    } = obj;
 
     switch (status) {
       case 'unchanged':

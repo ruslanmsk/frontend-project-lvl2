@@ -13,10 +13,10 @@ function styleValue(value) {
 }
 
 function generate(diff, prefix = '') {
-  const result = Object.keys(diff).sort().map((key) => {
+  const result = diff.sort().map((obj) => {
     const {
-      status, value, oldValue, newValue, children,
-    } = diff[key];
+      status, value, oldValue, newValue, children, key,
+    } = obj;
 
     switch (status) {
       case 'unchanged':

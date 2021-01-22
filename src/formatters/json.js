@@ -1,8 +1,8 @@
 function generate(diff) {
-  const result = Object.keys(diff).sort().map((key) => {
+  const result = diff.map((obj) => {
     const {
-      status, value, oldValue, newValue, children,
-    } = diff[key];
+      status, value, oldValue, newValue, children, key,
+    } = obj;
 
     switch (status) {
       case 'unchanged':
