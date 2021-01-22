@@ -10,8 +10,8 @@ function getFixturePath(filename, format) {
 describe('сравниваем разницу двух файлов', () => {
   it.each(formats)('многоуровневый файл, разница в формате stylish', (format) => {
     const result = genDiff(
-      getFixturePath('file5', format),
-      getFixturePath('file6', format),
+      getFixturePath('before', format),
+      getFixturePath('after', format),
     );
     expect(result).toStrictEqual(`{
     common: {
@@ -61,8 +61,8 @@ describe('сравниваем разницу двух файлов', () => {
 
   it.each(formats)('многоуровневый файл, разница в формате plain', (format) => {
     const result = genDiff(
-      getFixturePath('file5', format),
-      getFixturePath('file6', format),
+      getFixturePath('before', format),
+      getFixturePath('after', format),
       'plain',
     );
     expect(result).toStrictEqual(`Property 'common.follow' was added with value: false
@@ -80,8 +80,8 @@ Property 'group3' was added with value: [complex value]`);
 
   it.each(formats)('многоуровневый файл, разница в формате json', (format) => {
     const result = genDiff(
-      getFixturePath('file5', format),
-      getFixturePath('file6', format),
+      getFixturePath('before', format),
+      getFixturePath('after', format),
       'json',
     );
     expect(result).toStrictEqual(JSON.stringify([
