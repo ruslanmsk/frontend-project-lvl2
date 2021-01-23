@@ -19,8 +19,6 @@ function generate(diff, prefix = '') {
     } = obj;
 
     switch (status) {
-      case 'unchanged':
-        return null;
       case 'modified':
         return `Property '${prefix}${key}' was updated. From ${styleValue(oldValue)} to ${styleValue(newValue)}`;
       case 'deleted':
@@ -30,7 +28,7 @@ function generate(diff, prefix = '') {
       case 'complex':
         return generate(children, `${prefix}${key}.`).join('\n');
       default:
-        throw new Error('not right status diff');
+        return null;
     }
   });
 

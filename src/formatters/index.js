@@ -2,7 +2,7 @@ import plain from './plain.js';
 import stylish from './stylish.js';
 import json from './json.js';
 
-export default function getFormatter(formatName = 'stylish') {
+export default function getFormatter(formatName) {
   switch (formatName) {
     case 'stylish':
       return stylish;

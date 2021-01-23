@@ -36,9 +36,9 @@ export default function stylishFormatter(diff, space = 0) {
       case 'complex':
         return `    ${key}: ${stylishFormatter(children, space + 1)}`;
       default:
-        throw new Error('not right status diff');
+        return null;
     }
-  }).map((str) => `${' '.repeat(4 * space)}${str}`);
+  }).filter(Boolean).map((str) => `${' '.repeat(4 * space)}${str}`);
 
   return `{\n${result.join('\n')}\n${' '.repeat(4 * space)}}`.trim();
 }

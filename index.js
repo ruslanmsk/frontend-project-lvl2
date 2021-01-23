@@ -33,14 +33,11 @@ const getDiff = (json1, json2) => {
 };
 
 export default function genDiff(filepath1, filepath2, formatName = 'stylish') {
-  const file1 = parseFile(filepath1);
-  const file2 = parseFile(filepath2);
+  const fileContent1 = parseFile(filepath1);
+  const fileContent2 = parseFile(filepath2);
+  const diff = getDiff(fileContent1, fileContent2);
 
-  const diff = getDiff(file1, file2);
   const formatDiff = getFormatter(formatName);
   const result = formatDiff(diff);
   return result;
 }
-
-// const p = genDiff('./__fixtures__/json/file5.json', './__fixtures__/json/file6.json', 'plain');
-// console.log(p)

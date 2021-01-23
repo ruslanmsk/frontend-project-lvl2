@@ -5,9 +5,6 @@ function generate(diff) {
     } = obj;
 
     switch (status) {
-      case 'unchanged':
-        // TODO: убрать
-        return null;
       case 'modified':
         return {
           property: key, status: 'updated', oldValue, newValue,
@@ -21,7 +18,7 @@ function generate(diff) {
           property: key, status: 'updated', children: [...generate(children)],
         };
       default:
-        throw new Error('not right status diff');
+        return null;
     }
   });
 
