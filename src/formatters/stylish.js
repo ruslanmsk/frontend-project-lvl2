@@ -1,44 +1,51 @@
 import isObject from '../utils.js';
 
-export default function stylishFormatter(diff, space = 0) {
-  const printComplexObj = (value, currentSpace) => {
-    const result = Object.keys(value).map((key) => {
-      if (isObject(value[key])) {
-        return `    ${key}: ${printComplexObj(value[key], currentSpace + 1)}`;
-      }
-      return `    ${key}: ${value[key]}`;
-    }).map((str) => `${' '.repeat(4 * (currentSpace + 1))}${str}`);
+function joinComplexItem(result, s) {
+  return `{\n${result.join('\n')}\n${' '.repeat(s)}}`;
+}
 
-    return `{\n${result.join('\n')}\n${' '.repeat(4 * (currentSpace + 1))}}`.trim();
-  };
+function formatComplexItem(value, currentLevel) {
+  const spaceCount = 4 * (currentLevel + 2);
+  const result = Object.keys(value)
+    .map((key) => (isObject(value[key])
+      ? `${' '.repeat(spaceCount)}${key}: ${formatComplexItem(value[key], currentLevel + 1)}`
+      : `${' '.repeat(spaceCount)}${key}: ${value[key]}`));
 
-  const generateLine = (key, value, sign = ' ') => {
-    if (isObject(value)) {
-      return `  ${sign} ${key}: ${printComplexObj(value, space)}`;
-    }
-    return `  ${sign} ${key}: ${value}`;
-  };
+  return joinComplexItem(result, 4 * (currentLevel + 1));
+}
 
-  const result = diff.map((obj) => {
+function generateLine(key, value, prefix, currentLevel) {
+  return isObject(value)
+    ? `  ${prefix} ${key}: ${formatComplexItem(value, currentLevel)}`
+    : `  ${prefix} ${key}: ${value}`;
+}
+
+function format(diff, level = 0) {
+  const result = diff.map((diffItem) => {
     const {
       status, value, oldValue, newValue, children, key,
-    } = obj;
+    } = diffItem;
 
     switch (status) {
       case 'unchanged':
-        return generateLine(key, value, ' ');
+        return generateLine(key, value, ' ', level);
       case 'modified':
-        return `${generateLine(key, oldValue, '-')}\n${' '.repeat(4 * space)}${generateLine(key, newValue, '+')}`;
+        return `${generateLine(key, oldValue, '-', level)}\n${' '.repeat(4 * level)}${generateLine(key, newValue, '+', level)}`;
       case 'deleted':
-        return generateLine(key, value, '-');
+        return generateLine(key, value, '-', level);
       case 'added':
-        return generateLine(key, value, '+');
+        return generateLine(key, value, '+', level);
       case 'complex':
-        return `    ${key}: ${stylishFormatter(children, space + 1)}`;
+        return `${' '.repeat(4)}${key}: ${format(children, level + 1)}`;
       default:
         return null;
     }
-  }).filter(Boolean).map((str) => `${' '.repeat(4 * space)}${str}`);
+  }).filter(Boolean).map((str) => `${' '.repeat(4 * level)}${str}`);
 
-  return `{\n${result.join('\n')}\n${' '.repeat(4 * space)}}`.trim();
+  return joinComplexItem(result, 4 * level);
 }
+
+export default (diff) => {
+  const result = format(diff);
+  return result;
+};

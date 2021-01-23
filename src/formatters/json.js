@@ -1,8 +1,8 @@
-function generate(diff) {
-  const result = diff.map((obj) => {
+function format(diff) {
+  const result = diff.map((diffItem) => {
     const {
       status, value, oldValue, newValue, children, key,
-    } = obj;
+    } = diffItem;
 
     switch (status) {
       case 'modified':
@@ -15,7 +15,7 @@ function generate(diff) {
         return { property: key, status: 'added', newValue: value };
       case 'complex':
         return {
-          property: key, status: 'updated', children: [...generate(children)],
+          property: key, status: 'updated', children: [...format(children)],
         };
       default:
         return null;
@@ -25,7 +25,7 @@ function generate(diff) {
   return result.filter(Boolean);
 }
 
-export default function jsonFormatter(diff) {
-  const result = generate(diff);
+export default (diff) => {
+  const result = format(diff);
   return JSON.stringify(result);
-}
+};

@@ -6,9 +6,9 @@ import isObject from './src/utils.js';
 const getDiff = (json1, json2) => {
   const keys1 = Object.keys(json1);
   const keys2 = Object.keys(json2);
-  const allKeys = [...new Set([...keys1, ...keys2])];
+  const allUniqueKeys = [...new Set([...keys1, ...keys2])];
 
-  const result = _.sortBy(allKeys).map((key) => {
+  const result = _.sortBy(allUniqueKeys).map((key) => {
     const isFile1Contain = key in json1;
     const isFile2Contain = key in json2;
 
