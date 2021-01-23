@@ -1,7 +1,3 @@
-import fs from 'fs';
-import path from 'path';
-
-export default function parse(filepath) {
-  const fileContent = fs.readFileSync(path.resolve(filepath), 'utf-8');
+export default function parse(fileContent) {
   return JSON.parse(fileContent);
 }

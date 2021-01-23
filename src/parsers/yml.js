@@ -1,8 +1,5 @@
-import fs from 'fs';
-import path from 'path';
 import yaml from 'js-yaml';
 
-export default function parse(filepath) {
-  const fileContent = fs.readFileSync(path.resolve(filepath), 'utf-8');
+export default function parse(fileContent) {
   return yaml.load(fileContent);
 }
