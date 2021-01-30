@@ -1,20 +1,14 @@
-import fs from 'fs';
-import path from 'path';
 import parseJson from './json.js';
 import parseYml from './yml.js';
 
-export default (filepath) => {
-  const fileExtension = path.extname(filepath);
-
-  if (fileExtension === '.json') {
-    const fileContent = fs.readFileSync(path.resolve(filepath), 'utf-8');
-    return parseJson(fileContent);
+export default (data, format) => {
+  if (format === '.json') {
+    return parseJson(data);
   }
 
-  if (fileExtension === '.yml') {
-    const fileContent = fs.readFileSync(path.resolve(filepath), 'utf-8');
-    return parseYml(fileContent);
+  if (format === '.yml') {
+    return parseYml(data);
   }
 
-  throw new Error('Unknown file format');
+  throw new Error(`Unknown file format ${format}`);
 };

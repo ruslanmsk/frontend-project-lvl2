@@ -1,7 +1,7 @@
-import isObject from '../utils.js';
+import _ from 'lodash';
 
 function formatValue(value) {
-  if (isObject(value)) {
+  if (_.isObject(value)) {
     return '[complex value]';
   }
 

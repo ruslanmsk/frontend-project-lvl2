@@ -11,6 +11,6 @@ export default function getFormatter(formatName) {
     case 'json':
       return formatToJson;
     default:
-      throw new Error('Unknown format name');
+      throw new Error(`Unknown format name ${formatName}`);
   }
 }

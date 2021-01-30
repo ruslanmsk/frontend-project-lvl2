@@ -1,21 +1,21 @@
-import isObject from '../utils.js';
+import _ from 'lodash';
 
-function joinComplexItem(result, s) {
-  return `{\n${result.join('\n')}\n${' '.repeat(s)}}`;
+function joinComplexItems(items, spacesCount) {
+  return `{\n${items.join('\n')}\n${' '.repeat(spacesCount)}}`;
 }
 
 function formatComplexItem(value, currentLevel) {
-  const spaceCount = 4 * (currentLevel + 2);
+  const spacesCount = 4 * (currentLevel + 2);
   const result = Object.keys(value)
-    .map((key) => (isObject(value[key])
-      ? `${' '.repeat(spaceCount)}${key}: ${formatComplexItem(value[key], currentLevel + 1)}`
-      : `${' '.repeat(spaceCount)}${key}: ${value[key]}`));
+    .map((key) => (_.isObject(value[key])
+      ? `${' '.repeat(spacesCount)}${key}: ${formatComplexItem(value[key], currentLevel + 1)}`
+      : `${' '.repeat(spacesCount)}${key}: ${value[key]}`));
 
-  return joinComplexItem(result, 4 * (currentLevel + 1));
+  return joinComplexItems(result, 4 * (currentLevel + 1));
 }
 
 function generateLine(key, value, prefix, currentLevel) {
-  return isObject(value)
+  return _.isObject(value)
     ? `  ${prefix} ${key}: ${formatComplexItem(value, currentLevel)}`
     : `  ${prefix} ${key}: ${value}`;
 }
@@ -42,7 +42,7 @@ function format(diff, level = 0) {
     }
   }).filter(Boolean).map((str) => `${' '.repeat(4 * level)}${str}`);
 
-  return joinComplexItem(result, 4 * level);
+  return joinComplexItems(result, 4 * level);
 }
 
 export default (diff) => {
