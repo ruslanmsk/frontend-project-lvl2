@@ -43,17 +43,6 @@ describe('сравниваем разницу двух файлов', () => {
     expect(result).toStrictEqual(JSON.stringify(JSON.parse(expectedResult)));
   });
 
-  // it('ошибка при неверном файле', () => {
-  //   expect.hasAssertions();
-
-  //   expect(() => {
-  //     genDiff(
-  //       getFixturePath('before', 'js'),
-  //       getFixturePath('after', 'js'),
-  //     );
-  //   }).toThrow('Unknown file');
-  // });
-
   it('ошибка при неверном формате', () => {
     expect.hasAssertions();
 
