@@ -1,13 +1,12 @@
-import parseJson from './json.js';
-import parseYml from './yml.js';
+import yaml from 'js-yaml';
 
 export default (data, format) => {
   if (format === '.json') {
-    return parseJson(data);
+    return JSON.parse(data);
   }
 
   if (format === '.yml') {
-    return parseYml(data);
+    return yaml.load(data);
   }
 
   throw new Error(`Unknown file format ${format}`);
