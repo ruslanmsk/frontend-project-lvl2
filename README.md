@@ -5,8 +5,8 @@
 ![LINT](https://github.com/ruslanmsk/frontend-project-lvl2/workflows/LINT/badge.svg)
 
 # Overview
-Gendiff is a command-line difference calculator.
-Compares two configuration files and shows a difference.
+Gendiff is a command-line difference calculator
+Compares two configuration files and shows a difference
 
 # Usage
 ```
